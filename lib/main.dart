@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:ogu_schedule/course.dart';
+import 'package:ogu_schedule/showSchedule.dart';
 
 import 'studprep.dart';
 import 'showDivision.dart';
@@ -29,9 +30,11 @@ class _OguScheduleState extends State<OguSchedule> {
   int _idDivision;
   int _idCourse;
   int _idGroup;
-  _OguScheduleState(){
-    _step=0;
+
+  _OguScheduleState() {
+    _step = 0;
   }
+
   /* String get systemMes {
     switch (_step) {
       case 0:
@@ -56,7 +59,7 @@ class _OguScheduleState extends State<OguSchedule> {
       var allData = json.decode(response.body) as List<Object>;
       _divisionData = [];
       allData.forEach((f) {
-        _divisionData.add(f as Map<String, dynamic>);
+        _divisionData.add((f as Map<String, dynamic>));
       });
       _step = 0;
       _changeState();
@@ -94,10 +97,17 @@ class _OguScheduleState extends State<OguSchedule> {
       _changeState();
     }
   }
+
+  int _getTime() {
+    var time = DateTime(1970, DateTime.january, 1);
+    var duration = DateTime.now().difference(time);
+    return duration.inSeconds*1000;
+  }
+
   _getScheduleData(int added) async {
+    var time = _getTime();
     final response = await http
-        .get('http://oreluniver.ru/schedule/$_idDivision/$added/grouplist');
-    //print(response.body);
+        .get('http://oreluniver.ru/schedule//$added///$time/printschedule');
     if (response.statusCode == 200) {
       var allData = json.decode(response.body) as List<Object>;
       _scheduleData = [];
@@ -109,10 +119,12 @@ class _OguScheduleState extends State<OguSchedule> {
       _changeState();
     }
   }
-  _reset(){
-    _step=-1;
+
+  _reset() {
+    _step = -1;
     _changeState();
   }
+
   _getPrepData() async {}
 
   _changeState() {
@@ -126,9 +138,9 @@ class _OguScheduleState extends State<OguSchedule> {
     return MaterialApp(
         title: 'Расписание ОГУ',
         home: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: _reset,
-          ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: _reset,
+            ),
             appBar: AppBar(
               title: Text('Расписание ОГУ'),
             ),
@@ -138,6 +150,7 @@ class _OguScheduleState extends State<OguSchedule> {
                     ? ShowDivision(_divisionData, _getCourseData)
                     : _step == 2
                         ? ShowCourse(_courseData, _getGroupData)
-                        : ShowGroup(_groupData,_getScheduleData)));
+                        :_step==3 ? ShowGroup(_groupData, _getScheduleData):
+        ShowSchedule(_scheduleData)));
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,9 +13,8 @@ class ShowGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(children: <Widget>[
       ...groupData.map((f) {
-        return ListTile(/*onTap:function
-        //TODO find out how to count weeks
-        ,*/title: Text(f['title']));
+        return ListTile(onTap: ()=>function(f['idgruop']),
+        title: Text(utf8.decode(f['title'].toString().codeUnits)));
       })
     ]);
   }
