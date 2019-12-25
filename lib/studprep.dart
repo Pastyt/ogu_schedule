@@ -8,29 +8,37 @@ class StudPrep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(children: <Widget>[
+    return Container(
+      height: double.infinity,
+        width: double.infinity,
+       // child: Center(
+            child: Column(
+
+            children: <Widget>[
       /*Container(
               width: double.infinity,
               child: Text(systemMes,textAlign: TextAlign.center,style: TextStyle(
                 fontSize: 35
               ),),
             ),*/
-
+  Container(
+    child:
       RaisedButton(
           onPressed: getStud,
           child: Text(
-            '    Студент  ',
+            'Студент',
             style: TextStyle(fontSize: 15),
           ),
-          textTheme: ButtonTextTheme.primary),
+          textTheme: ButtonTextTheme.primary)),
+        Container(
+          child:
       RaisedButton(
           onPressed: getPrep,
           child: Text(
-            'Преподаватель (NOT WORK)',
+            'Преподаватель',
             style: TextStyle(fontSize: 15),
           ),
           textTheme: ButtonTextTheme.primary)
-    ]));
+        )]));
   }
 }
